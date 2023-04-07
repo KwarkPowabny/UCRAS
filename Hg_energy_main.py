@@ -97,6 +97,7 @@ for mk in params.mk_vals:
     N_prev+=N
 np.save('Hg_energy_matrix', E)
 np.save('Hg_eigenvectors', eigvect)
+np.save('Hg_eigenstates', energy)
 plt.figure(figsize=(8,6))
 #plt.xlim(200, 1800)
 #plt.ylim(-200, 50)
