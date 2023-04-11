@@ -27,6 +27,7 @@ for i in range(len(basis)):
     #E[i] = np.array(list(f1[:,i+1]) + list(f2[:,i+1]))
     E.append(np.array(list(f1[:,i+1]) + list(f2[:,i+1])))
     spins.append(np.array(list(f3[:,i]) + list(f4[:,i])))
+    np.round(spins[i], 3)
             
 color = 'rainbow'         
 fig1 = plt.figure()
