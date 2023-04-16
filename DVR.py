@@ -23,7 +23,7 @@ from scipy.interpolate import interp1d
 """
 h = 6.62607015*10**(-34)
 a, b = -1, 1
-N = 100
+N = 10
 d = (b - a)/(N)
 x = np.linspace(a+d, b-d, N - 1)
 m = 1
@@ -33,10 +33,11 @@ def Matrix_prep():
     T = V = np.zeros((N - 1, N - 1))
     potential = np.zeros(N - 1)
     for i in range(N-1):
-        V[i, i] = potential[i] = m*w**2*x[i]**2 #potential[potential_num]
-        T[i, i] = h**2/(16*m*(b-a)**2)*((2*N**2+1)/3-1/(mth.sin(mth.pi*(i+1)/N))**2)
         for j in range(N-1):
-            if j != i:
+            if j == i:
+                V[i, i] = potential[i] = m*w**2*x[i]**2 #potential[potential_num]
+                T[i, i] = h**2/(16*m*(b-a)**2)*((2*N**2+1)/3-1/(mth.sin(mth.pi*(i+1)/N))**2)
+            else:
                 T[i][j] = (-1)**(i-j)*h**2/(16*m*(b-a)**2)*(1/(mth.sin(mth.pi*(i-j)/2*N))**2 \
                                                         - 1/(mth.sin(mth.pi*(i+j+2)/2*N))**2)
     H = T + V
@@ -48,6 +49,18 @@ eigval, eigvec = np.linalg.eigh(H)
 plt.matshow(H)
 plt.colorbar()
 plt.show()
+
+plt.figure()
+plt.xlabel("R (arb. units)")
+plt.ylabel("E (arb. units)")
+plt.title('DVR test on Harmonic Potential')
+for i in range(N-1):
+    plt.axhline(y=eigval[i])
+    #plt.text(0.5, eigval[i], 'E = ' + str(eigval[i]), fontsize=5, va='center', ha='center', backgroundcolor='w')
+plt.plot(x, potential, color = 'black')
+#plt.savefig("Hg_DVR.pdf")
+plt.show()
+
 
 """Nie istotne, wip lepszego wyświetlania i DVR nie testowego.
 potential = np.zeros(NR)
@@ -76,14 +89,3 @@ for i in range(N-1):
     plt.axhline(y=eigval[i])
 plt.savefig("Hg_DVR.pdf")
 """
-
-plt.figure()
-plt.xlabel("R (arb. units)")
-plt.ylabel("E (arb. units)")
-plt.title('DVR test on Harmonic Potential')
-for i in range(N-1):
-    plt.axhline(y=eigval[i])
-    #plt.text(0.5, eigval[i], 'E = ' + str(eigval[i]), fontsize=5, va='center', ha='center', backgroundcolor='w')
-plt.plot(x, potential, color = 'black')
-#plt.savefig("Hg_DVR.pdf")
-plt.show()
