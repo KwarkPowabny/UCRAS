@@ -36,6 +36,7 @@ def Matrix_prep():
 
 H = Matrix_prep()
 eigval, eigvec = np.linalg.eigh(H)
+"""
 plt.matshow(H)
 plt.colorbar()
 plt.show()
@@ -46,16 +47,18 @@ plt.xlabel("State index $n$")
 plt.ylabel("E (arb. units)")
 plt.plot(eigval[0:99],'o')
 plt.show()
+"""
 
 plt.figure()
 plt.title('DVR test on Harmonic V')
 plt.xlabel("R (arb. units)")
 plt.ylabel("E (arb. units)")
 n = np.linspace(1,999,999)
-m = 10
+m = 10 #number of states to plot
 for n in range(m):
-    plt.plot(x,eigvec[:,n]+ n)    
+    plt.plot(x,eigvec[:,n]+ 2*n*eigval[0])    
 plt.plot(x,v)
-plt.ylim(-1/2, m)
+plt.ylim(-1/2, 2*(m+2)*eigval[0])
+plt.xlim(-2,2)
 plt.show()
 
