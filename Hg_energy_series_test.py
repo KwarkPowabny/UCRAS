@@ -105,3 +105,4 @@ plt.savefig("Hg_E_R_cut.pdf")
 """
 for i in range(len(basis_LS)):
     plt.plot(params.R, E[i][0])
+plt.show()

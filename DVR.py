@@ -53,7 +53,7 @@ plt.figure()
 plt.title('DVR test on Harmonic V')
 plt.xlabel("R (arb. units)")
 plt.ylabel("E (arb. units)")
-n = np.linspace(1,999,999)
+
 m = 10 #number of states to plot
 for n in range(m):
     plt.plot(x,eigvec[:,n]+ 2*n*eigval[0])    
