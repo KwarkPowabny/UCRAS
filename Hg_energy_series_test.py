@@ -2,13 +2,12 @@
 """
 Created on Tue Mar 21 10:30:38 2023
 
-@author: lenovo
+@author: Pawel
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm 
-#import time
 import Hg_energy_params as params
 import Hg_energy_func as func
 

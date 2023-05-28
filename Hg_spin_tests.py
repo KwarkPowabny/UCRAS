@@ -2,10 +2,13 @@
 """
 Created on Thu Mar 23 16:16:49 2023
 
-@author: lenovo
+@author: Pawel
+
+using altered .functions
 """
 import numpy as np
 import matplotlib.pyplot as plt
+import Hg_energy_func as func
 """
 spins = []
 E = []
@@ -23,16 +26,31 @@ spins =  np.load('Hg_spin_tests_filesS.npy')
 E =  np.load('Hg_spin_tests_filesE.npy')
 R =  np.load('Hg_spin_tests_filesR.npy')
 color = 'rainbow'
-vmin = np.min(spins) 
-vmax = np.max(spins) 
+
 
 fig1 = plt.figure()
 plt.xlabel("R (Bohr)")
 plt.ylabel("E (GHz)")
-plt.xlim(300,750)
-plt.ylim(-000,400)
+#plt.xlim(300,750)
+#plt.ylim(-000,400)
+avg = []
+spins_cutoff = []
+E_cutoff = []
+spins_cut = []
+E_cut = []
+m = (0,0)
+a = 5 #rząd dokładności
 for i in range(len(E)):
-    plt.scatter(R, E[i], s=10, c = spins[i], cmap = color, alpha=0.5, vmin=vmin, vmax=vmax)
-plt.savefig("Hg_E_R.pdf")
-plt.show()
+    avg.append(round(np.sum(E[i])/len(E[i]), a - 1))
+    if  (avg[i] < (1+10**(-a))*E[i][798] and avg[i] > (1-10**(-a))*E[i][798]) :
+        E_cutoff.append(E[i])
+        spins_cutoff.append(spins[i])
+    else:
+        E_cut.append(E[i])
+        spins_cut.append(spins[i])
+func.plot_spin(E_cutoff, R, spins_cutoff, color = color)
 
+maxi = round((np.array(E_cut).argmax())/len(E_cut[0]))
+plt.scatter(R, E_cut[maxi], s=10, c = spins_cut[maxi], cmap = color, alpha=0.5, vmin=vmin, vmax=vmax)
+
+plt.show()

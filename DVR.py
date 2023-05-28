@@ -56,7 +56,7 @@ plt.ylabel("E (arb. units)")
 
 m = 10 #number of states to plot
 for n in range(m):
-    plt.plot(x,eigvec[:,n]+ 2*n*eigval[0])    
+    plt.plot(x,eigvec[:,n]+ eigval[0])    
 plt.plot(x,v)
 plt.ylim(-1/2, 2*(m+2)*eigval[0])
 plt.xlim(-2,2)
