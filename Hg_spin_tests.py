@@ -26,8 +26,7 @@ for i in range(len(f1[0])-1):
 spins =  np.load('Hg_spin_tests_filesS.npy')
 E =  np.load('Hg_spin_tests_filesE.npy')
 R =  np.load('Hg_spin_tests_filesR.npy')
-#derivative = np.load('uzupełnij proszę kuba')
-derivative = spins #i to usuń
+derivative = np.load('Hg_derE.npy')
 color = 'rainbow'
 NR = len(E[0])
 
