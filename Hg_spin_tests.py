@@ -42,10 +42,8 @@ spins_cut = []
 E_cut = []
 E_cut_max = []
 derivative_cut = []
-m = (0,0)
-a = 5 #rząd dokładności
 for i in range(len(E)):
-    if np.abs(np.sum(np.array(E[i])) - NR*E[i][len(E[i])-5]) < 1e-5 :
+    if np.abs(np.sum(np.array(E[i])) - NR*E[i][len(E[i])-5]) < 1e-4 :
         E_cutoff.append(E[i])
         spins_cutoff.append(spins[i])
     else:
@@ -61,11 +59,11 @@ E_cutoff = np.array(E_cutoff)
 n_biggest = 3 #ile najwyższych stanów plotować
 for i in E_cut_max.argsort()[-n_biggest:]:
     f, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True)
-    ax1.scatter(R, E_cut[i])
-    ax1.set_title('State')
-    ax2.scatter(R, spins_cut[i])
+    ax1.scatter(R, E_cut[i], c = spins_cut[i], cmap = 'viridis')
+    ax1.set_title('State', )
+    ax2.scatter(R, spins_cut[i], c = spins_cut[i], cmap = 'viridis')
     ax2.set_title('Spin')
-    ax3.scatter(R, derivative_cut[i])
+    ax3.scatter(R, derivative_cut[i], c = derivative_cut[i], cmap = 'Reds')
     ax3.set_title('Derivative')
     f.savefig('graphs/Hg_E_cut_biggest_' + str(n_biggest) + '.pdf')
     n_biggest -= 1
