@@ -26,7 +26,7 @@ for i in range(len(f1[0])-1):
 spins =  np.load('Hg_spin_tests_filesS.npy')
 E =  np.load('Hg_spin_tests_filesE.npy')
 R =  np.load('Hg_spin_tests_filesR.npy')
-derivative = np.load('Hg_derE.npy')
+derivative = np.load('HGderE.npy')
 color = 'rainbow'
 NR = len(E[0])
 
