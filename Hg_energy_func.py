@@ -464,3 +464,4 @@ def plot_spin(E, R, spins, name = None, color = 'rainbow', s = 10):
             plt.scatter(R, E[i], s, c = spins[i], cmap = color, alpha=0.5, vmin=vmin, vmax=vmax)
     if name is not None:
         plt.savefig(name + '.pdf')
+        
