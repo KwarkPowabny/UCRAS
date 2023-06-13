@@ -17,5 +17,6 @@ spins_derivative = np.load("f")
 state_derivative = np.load("f")
 
 
-for r in range(params.R):
-    if
+for r in range(first_crossing - 3, last_crossing + 3):
+    for i in range(num_states):
+        if (... or ...)
