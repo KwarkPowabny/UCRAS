@@ -6,7 +6,7 @@ import Hg_energy_params as params
 import Hg_energy_func as func
 
 
-E = np.load('HGEcut.npy')
+E = np.load('Hg_E_cut.npy')
 basis = func.prep_basis(params.mk_vals)[0]
 spins = []
 f1 = np.loadtxt("part1_HgRb_30_1.txt")
