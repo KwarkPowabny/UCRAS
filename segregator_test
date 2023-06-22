@@ -1,0 +1,28 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Mar 21 10:30:38 2023
+
+@author: Pawel
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+import Hg_energy_params as params
+import Hg_energy_func as func
+
+E = np.zeros(3, 100)
+states = np.zeros(3,100) 
+der = np.zeros(3, 100)
+dr = 2/100
+x = np.arange(-1, 1, dr)
+E[0] = x
+E[1] = -0.5*(i+1)*x
+E[2] = 0*x
+for i in range(99):
+    for j in range(3):
+"""random stuff, didn't have the time
+der[j][i] = (E[j][i+1]-E[j][i])/dr
+        states[j][i+1] = E[j][i] + der[j][i]*dr
+        states[j][i+1] = states[np.argsort(states[:,0])]
+"""
+        
