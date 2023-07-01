@@ -10,19 +10,24 @@ import matplotlib.pyplot as plt
 import Hg_energy_params as params
 import Hg_energy_func as func
 
-E = np.zeros(3, 100)
-states = np.zeros(3,100) 
-der = np.zeros(3, 100)
+E = np.load('segregator_E.npy')
+states = np.zeros((3,100))
+states_copy = np.zeros((3,100))  
+der = np.zeros((3, 100))
 dr = 2/100
 x = np.arange(-1, 1, dr)
-E[0] = x
-E[1] = -0.5*(i+1)*x
-E[2] = 0*x
-for i in range(99):
-    for j in range(3):
-"""random stuff, didn't have the time
-der[j][i] = (E[j][i+1]-E[j][i])/dr
-        states[j][i+1] = E[j][i] + der[j][i]*dr
-        states[j][i+1] = states[np.argsort(states[:,0])]
-"""
-        
+for j in range(3):
+    states[j][0] = E[j][0]
+    for i in range(99):
+        der[j][i] = (E[j][i+1]-E[j][i])/dr
+        states[j][i+1] = 2*E[j][i] - E[j][i-1] #x_{i+1} = x_{i} + x'_{i}*dr ~ x_{i} + x'_{i-1}*dr = 2*x_{i}-x_{i-1}
+    sort_indices = np.argsort(states[j,:])
+    states_copy[j] = states[j]
+    for i in range(99):
+        states[j][i] = states_copy[j][sort_indices[i]]
+
+for i in range(3):
+    plt.scatter(x, E[i])
+    #plt.scatter(x, der[i])
+    plt.scatter(x, states[i])
+plt.show()
