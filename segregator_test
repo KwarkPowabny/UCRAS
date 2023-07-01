@@ -12,22 +12,27 @@ import Hg_energy_func as func
 
 E = np.load('segregator_E.npy')
 states = np.zeros((3,100))
-states_copy = np.zeros((3,100))  
 der = np.zeros((3, 100))
 dr = 2/100
 x = np.arange(-1, 1, dr)
-for j in range(3):
+f, axs = plt.subplots(3, sharex=True)
+for j in range(len(E)):
     states[j][0] = E[j][0]
-    for i in range(99):
+for i in range(len(E[0])-1):
+    for j in range(3):
         der[j][i] = (E[j][i+1]-E[j][i])/dr
         states[j][i+1] = 2*E[j][i] - E[j][i-1] #x_{i+1} = x_{i} + x'_{i}*dr ~ x_{i} + x'_{i-1}*dr = 2*x_{i}-x_{i-1}
-    sort_indices = np.argsort(states[j,:])
-    states_copy[j] = states[j]
-    for i in range(99):
-        states[j][i] = states_copy[j][sort_indices[i]]
+    indices_old = np.argsort(E[:,i])
+    indices_new = np.argsort(states[:,i])
+    states[j][i+1] = E[indices_old[indices_new[j]]][i+1]
+for j in range(3):
+    axs[0].scatter(x, E[j])
+    axs[0].set_title('Energy input')
+    axs[2].scatter(x, der[j])
+    axs[2].set_title('derivative')
+    axs[1].scatter(x, states[j])
+    axs[1].set_title('Energy output')
+    axs[2].set_ylim(-1.5,1.5)
+    axs[1].set_ylim(-1,1)
 
-for i in range(3):
-    plt.scatter(x, E[i])
-    #plt.scatter(x, der[i])
-    plt.scatter(x, states[i])
 plt.show()
