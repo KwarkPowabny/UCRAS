@@ -10,27 +10,40 @@ import matplotlib.pyplot as plt
 import Hg_energy_params as params
 import Hg_energy_func as func
 
-E = np.load('segregator_E.npy')
+E = np.load('segregator_E.npy') #len(E) = num_states
 states = np.zeros((3,100))
 der = np.zeros((3, 100))
 dr = 2/100
 x = np.arange(-1, 1, dr)
 f, axs = plt.subplots(3, sharex=True)
-for j in range(len(E)):
-    states[j][0] = E[j][0]
-for i in range(len(E[0])-1):
-    for j in range(3):
-        der[j][i] = (E[j][i+1]-E[j][i])/dr
-        states[j][i+1] = 2*E[j][i] - E[j][i-1] #x_{i+1} = x_{i} + x'_{i}*dr ~ x_{i} + x'_{i-1}*dr = 2*x_{i}-x_{i-1}
-    indices_old = np.argsort(E[:,i])
-    indices_new = np.argsort(states[:,i])
-    states[j][i+1] = E[indices_old[indices_new[j]]][i+1]
-for j in range(3):
-    axs[0].scatter(x, E[j])
+for n in range(len(E)):
+    states[n][0] = E[n][0]
+
+for r in range(len(E[0])-1):
+    for n in range(3):
+        states[n][r+1] = 2*E[n][r] - E[n][r-1] #x_{i+1} = x_{i} + x'_{i}*dr ~ x_{i} + x'_{i-1}*dr = 2*x_{i}-x_{i-1}
+    indices_old = np.argsort(E[:,r])
+    indices_new = np.argsort(states[:,r])
+    doubles = []
+    for i in range(0, len(E), 2):
+        for j in range(i + 2, len(E) - 1, 2):
+            if E[i] == E[j]:
+                #TEMP = 0
+                #TEMP = indices_new[i]
+                #indices_new[i] = indices_new[j]
+                #indices_new[j] = TEMP
+                #TEMP = indices_old[i]
+                #indices_old[i] = indices_old[j]
+                #indices_old[j] = TEMP
+                break
+    states[n][r+1] = E[indices_old[indices_new[n]]][r+1]
+    der[n][r] = (E[n][r+1]-E[n][r])/dr
+for n in range(3):
+    axs[0].scatter(x, E[n])
     axs[0].set_title('Energy input')
-    axs[2].scatter(x, der[j])
+    axs[2].scatter(x, der[n])
     axs[2].set_title('derivative')
-    axs[1].scatter(x, states[j])
+    axs[1].scatter(x, states[n])
     axs[1].set_title('Energy output')
     axs[2].set_ylim(-1.5,1.5)
     axs[1].set_ylim(-1,1)
