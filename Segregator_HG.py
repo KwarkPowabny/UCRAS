@@ -1,14 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jul  1 01:14:48 2023
-
-@author: jakubscioch
-"""
-
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
 Created on Thu Jun 29 16:40:56 2023
 
 @author: jakubscioch
@@ -37,18 +29,14 @@ def sort_states_and_interp_spins(E, E_cut, E_cut2, spins_cut):
         if np.abs(np.sum(np.array(E[i])) - NR*E[i][len(E[i])-5]) >1e-5:
             E_cut.append(E[i])
             spins_cut.append(spins[i])
-            
-    for i in range(len(E)-3):
-        if np.abs(np.sum(np.array(E[i])) - NR*E[i][len(E[i])-5]) >1e-5:
             E_cut2.append(E[i])
                 
-
     E_cut = np.array(E_cut)
     E_cut2 = np.array(E_cut)
     spins_cut=np.array(spins_cut)
-    derE2 = np.zeros((len(E_cut) , len(R)))
+    derE = np.zeros((len(E_cut) , len(R)))
     spins_ext = np.zeros((len(E_cut) , len(R)))
-    test_arr = np.zeros((len(E_cut) , len(R)))
+    #interpolacja spinów z g800 na g4000 (g - grid)
     for i in range(len(spins_cut)):
         R_arr=np.array(R)
         R_spin_arr=np.array(R_spin)   
@@ -58,17 +46,10 @@ def sort_states_and_interp_spins(E, E_cut, E_cut2, spins_cut):
 
 sort_states_and_interp_spins(E, E_cut, E_cut2, spins_cut)
 
-ik = int(len(480))
+ik = 480
 E_sort = []
 for p in range(ik):
     E_sort.append([])  
-
-for i in range(0,478,1) :
-    plt.plot(R, E_cut[i])    
-    plt.ylim(-30,0)
-    plt.xlim(700,1800)
-plt.show()
-
 
 def Find_state(x,k,j):
    
@@ -78,73 +59,51 @@ def Find_state(x,k,j):
         
             return (i)      
 
-#sortowanie:
-          
-for k in range(0,478,1) :
+#sortowanie:         
+for k in range(0,480,1) :
     print(k)
     E_sort[k].append(E_cut[k][0])    
     E_cut[k][0]=0
     for j in range(1,3996,1) :  
- 
-     if len(E_sort[k])==1 or len(E_sort[k])==2:  
-            
-           w=Find_state(E_sort[k][j-1],k,j)
-     
-                                
-           lista3=  []  
-           for t in range(0,480,1):
-            
-            if E_cut[t][j]!=0.0:   
-             q= abs((E_cut[t][j]-E_sort[k][j-1]))
-             lista3.append(q)
-           r=min(lista3)
-           for s in range(0,480,1):
-            if abs((E_cut[s][j]-E_sort[k][j-1])) ==r:
-             E_sort[k].append(E_cut[s][j]) 
-            
-             E_cut[s][j]=0   
-             break 
-                    
-                   
-                             
-     else:
-              w=Find_state(E_sort[k][j-1],k,j)
-        
-                                   
-              lista3=  []  
-              for t in range(0,480,1):
-               
-               if E_cut[t][j]!=0.0:   
-                q= abs((E_cut[t][j]-2*E_sort[k][j-1]+E_sort[k][j-2])/dr)  
-                lista3.append(q)
-              r=min(lista3)
-              for s in range(0,480,1):
-               if abs((E_cut[s][j]-2*E_sort[k][j-1]+E_sort[k][j-2])/dr) ==r:
-                E_sort[k].append(E_cut[s][j]) 
-               
-                E_cut[s][j]=0   
-                break 
-            
-          
-                     
-                               
-                            
+        if len(E_sort[k])==1 or len(E_sort[k])==2:                       
+            lista3=  []  
+            for t in range(0,480,1):
+                if E_cut[t][j]!=0.0:   
+                    q= abs((E_cut[t][j]-E_sort[k][j-1]))
+                    lista3.append(q)
+                r=min(lista3)
+                for s in range(0,480,1):
+                    if abs((E_cut[s][j]-E_sort[k][j-1])) ==r:
+                        E_sort[k].append(E_cut[s][j]) 
+                        E_cut[s][j]=0   
+                        break                                
+        else:                      
+            lista3=  []  
+            for t in range(0,480,1):
+                if E_cut[t][j]!=0.0:   
+                    q= abs((E_cut[t][j]-2*E_sort[k][j-1]+E_sort[k][j-2])/dr)  
+                    lista3.append(q)
+                    r=min(lista3)
+                    for s in range(0,480,1):
+                        if abs((E_cut[s][j]-2*E_sort[k][j-1]+E_sort[k][j-2])/dr) ==r:
+                            E_sort[k].append(E_cut[s][j]) 
+                            E_cut[s][j]=0   
+                            break 
+
+#pochodna                             
 for i in range(250,310,1) :
     for j in range(len(R)-3):
-        dE2=(E_sort[i][j+1]-E_sort[i][j])/(dr)
-        derE2[i][j] = dE2  
+        dE=(E_sort[i][j+1]-E_sort[i][j])/(dr)
+        derE[i][j] = dE 
 
-
-
-
-
-
-
+#zapisywanie energii
+"""
 with open("Hg_E_matrix_g4000_sort", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerows(E_sort)
-
+"""
  
+ #plotowanie
 for i in range(260,308,1):
 
     f, (ax1, ax2,ax3) = plt.subplots(3, 1, sharex=True)
@@ -157,15 +116,11 @@ for i in range(260,308,1):
     ax1.scatter(R_T, E_sort[i-1],s=1,color='red',alpha=0.3)
     ax1.scatter(R_T, E_sort[i],s=6,color='blue',alpha=0.3)
     ax1.scatter(R_T, E_sort[i+1],s=3,color='green',alpha=0.3)
-  #  ax1.scatter(R_T, E_sort[i-2],s=1,color='black',alpha=0.5)
-   # ax1.scatter(R_T, E_sort[i+2],s=1,color='purple',alpha=0.3)
    # ax1.set_ylim(-23.3,-23.27)
     
-    ax2.scatter(R, derE2[i-1],s=4,color='red',alpha=0.3)
-    ax2.scatter(R, derE2[i],s=4,color='blue',alpha=0.4)
-    ax2.scatter(R,derE2[i+1],s=4,color='green',alpha=0.3)
-   # ax2.scatter(R, derE2[i+2],s=1,color='black',alpha=0.4)
-    #ax2.scatter(R,derE2[i-2],s=1,color='purple',alpha=0.3)
+    ax2.scatter(R, derE[i-1],s=4,color='red',alpha=0.3)
+    ax2.scatter(R, derE[i],s=4,color='blue',alpha=0.4)
+    ax2.scatter(R,derE[i+1],s=4,color='green',alpha=0.3)
    # ax2.set_xlim(808.5,810)
     #ax2.set_ylim(-0.015,0.015)
     
@@ -177,20 +132,3 @@ for i in range(260,308,1):
     
     plt.show()
    # f.savefig('New_Sort_HG_plot_' + str(i) + '.pdf')
-    
-for i in range(0,478,1) :
- plt.plot(R_T,E_sort[i])    
- plt.ylim(-30,0)
- plt.xlim(700,1800)
-plt.show()
-
-#for i in range(250,310,1):
-  
-# f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
-# ax1.set_title('State'+str(i))  
- #ax1.scatter(R,E_cut[i],s=2,color='red',alpha=0.4)
- #ax2.scatter(R_T,E_sort[i],s=2,color='red',alpha=0.4)
- #ax2.set_ylim(-24,-22.9)
-# ax1.set_ylim(-24,-22.9)
-
-# plt.show()
