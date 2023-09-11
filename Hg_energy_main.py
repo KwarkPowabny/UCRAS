@@ -95,9 +95,9 @@ for mk in params.mk_vals:
               eigvect.append(vect)
     print(params.R, E_R[0])
     N_prev+=N
-np.save('Hg_energy_matrix', E)
-np.save('Hg_eigenvectors', eigvect)
-np.save('Hg_eigenstates', energy)
+np.save('Hg_energy_matrix_l1strict', E)
+np.save('Hg_eigenvectors_l1strict', eigvect)
+np.save('Hg_eigenstates_l1strict', energy)
 plt.figure(figsize=(8,6))
 #plt.xlim(200, 1800)
 #plt.ylim(-200, 50)
