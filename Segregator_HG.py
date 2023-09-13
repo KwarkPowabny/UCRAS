@@ -51,35 +51,58 @@ for p in range(ik):
     E_sort.append([])    
 
 #sortowanie:         
-for k in range(0,len(E_cut),1) :
-    print(k)
-    E_sort[k].append(E_cut[k][0])    
-    E_cut[k][0]=0
-    for j in range(1,NR - 2,1) :  
-        if len(E_sort[k])==1 or len(E_sort[k])==2:#dla 3. pierw. punktów sort. jest uproszczone                    
+for j in range(1,5,1) :
+    print(j) 
+    used_states=[]
+    for k in range(0,480,1) : 
+        if len(E_sort[k])==1 :  
             lista3=  []  
-            for t in range(0,len(E_cut),1):
-                if E_cut[t][j]!=0.0:   
-                    q= abs((E_cut[t][j]-E_sort[k][j-1])) 
+            for t in  [x for x in range(480) if x not in used_states]:       
+                q= abs((E_cut2[k][j]-E_sort[t][j-1]))
+                lista3.append(q)
+            r=min(lista3)
+            for s in  [x for x in range(480) if x not in used_states]:
+                if abs((E_cut2[k][j]-E_sort[s][j-1])) ==r:
+                    E_sort[s].append(E_cut2[k][j]) 
+                    used_states.append(s) 
+             
+                    break 
+        else:               
+     
+            if  len(E_sort[k])==2 or len(E_sort[k])==3 or len(E_sort[k])==4 or len(E_sort[k])==5:                              
+                lista3=[]  
+                for t in  [x for x in range(480) if x not in used_states]:            
+                    q= abs((E_cut2[k][j]-2*E_sort[t][j-1]+E_sort[t][j-2]))  
                     lista3.append(q)
                 r=min(lista3)
-                for s in range(0,len(E_cut),1):
-                    if abs((E_cut[s][j]-E_sort[k][j-1])) ==r:
-                        E_sort[k].append(E_cut[s][j]) 
-                        E_cut[s][j]=0   
-                        break                                
-        else:                      
-            lista3=  []  
-            for t in range(0,len(E_cut),1):
-                if E_cut[t][j]!=0.0:   
-                    q= abs((E_cut[t][j]-2*E_sort[k][j-1]+E_sort[k][j-2])/dr)  
-                    lista3.append(q)
-                    r=min(lista3)
-                    for s in range(0,len(E_cut),1):
-                        if abs((E_cut[s][j]-2*E_sort[k][j-1]+E_sort[k][j-2])/dr) ==r:
-                            E_sort[k].append(E_cut[s][j]) 
-                            E_cut[s][j]=0   
-                            break 
+                for s in  [x for x in range(480) if x not in used_states]:
+                    if abs((E_cut2[k][j]-2*E_sort[s][j-1]+E_sort[s][j-2])) ==r:
+                        E_sort[s].append(E_cut2[k][j]) 
+                        used_states.append(s)
+              
+                        break 
+       
+             
+        
+                                        
+for j in range(5,3998,1)  :     
+    used_states=[]             
+    print(j)
+    for k in range(0,480,1)  :         
+        lista3=[] 
+        for t in  [x for x in range(480) if x not in used_states]:               
+            q= abs((5*E_cut2[k][j]-18*E_sort[t][j-1]+24*E_sort[t][j-2]-14*E_sort[t][j-3]+3*E_sort[t][j-4]))  
+            lista3.append(q)               
+        r=min(lista3)
+        for s in  [x for x in range(480) if x not in used_states]:
+            if abs((5*E_cut2[k][j]-18*E_sort[s][j-1]+24*E_sort[s][j-2]-14*E_sort[s][j-3]+3*E_sort[s][j-4])) ==r:
+                E_sort[s].append(E_cut2[k][j]) 
+                used_states.append(s) 
+                                  
+               
+                
+                break 
+             
 
 #pochodna                             
 for i in range(250,310,1) :
