@@ -49,7 +49,7 @@ def prep_basis(mk):
     
     # (LS)J
     for n in params.n_vals:
-        for l1 in range(0,2): #for l1 in range(0,n):
+        for l1 in range(0,n): #for l1 in range(0,n):
             for lc in params.lc_vals:
                 L_vals = np.arange(np.abs(l1-lc), np.abs(l1+lc)+0.1)
                 for L in L_vals:

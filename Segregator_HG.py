@@ -13,14 +13,13 @@ E=np.load('Hg_E_matrix_g4000.npy')
 spins =  np.load('Hg_S_g800.npy')
 R_min = 600
 R_max = 1800
-NR = 3998
+NR = len(E[0])
 R = np.linspace(R_min, R_max, NR)
-R_T=np.linspace(R_min, R_max, 3996)
+R_T=np.linspace(R_min, R_max, NR - 2)
 R_spin=np.linspace(R_min, R_max, 800)
-dr=(R[3997]-R[0])/len(R)
+dr=(R[NR - 1]-R[0])/len(R)
 E_cut = []
 E_cut2 = []
-NR = len(E[0])
 spins_cut=[]
 
 def sort_states_and_interp_spins(E, E_cut, E_cut2, spins_cut):
@@ -49,42 +48,34 @@ sort_states_and_interp_spins(E, E_cut, E_cut2, spins_cut)
 ik = 480
 E_sort = []
 for p in range(ik):
-    E_sort.append([])  
-
-def Find_state(x,k,j):
-   
-    for i in range(0,480,1)  :
-        q=E_cut2[i][j-1]
-        if q==x:
-        
-            return (i)      
+    E_sort.append([])    
 
 #sortowanie:         
-for k in range(0,480,1) :
+for k in range(0,len(E_cut),1) :
     print(k)
     E_sort[k].append(E_cut[k][0])    
     E_cut[k][0]=0
-    for j in range(1,3996,1) :  
-        if len(E_sort[k])==1 or len(E_sort[k])==2:                       
+    for j in range(1,NR - 2,1) :  
+        if len(E_sort[k])==1 or len(E_sort[k])==2:#dla 3. pierw. punktów sort. jest uproszczone                    
             lista3=  []  
-            for t in range(0,480,1):
+            for t in range(0,len(E_cut),1):
                 if E_cut[t][j]!=0.0:   
-                    q= abs((E_cut[t][j]-E_sort[k][j-1]))
+                    q= abs((E_cut[t][j]-E_sort[k][j-1])) 
                     lista3.append(q)
                 r=min(lista3)
-                for s in range(0,480,1):
+                for s in range(0,len(E_cut),1):
                     if abs((E_cut[s][j]-E_sort[k][j-1])) ==r:
                         E_sort[k].append(E_cut[s][j]) 
                         E_cut[s][j]=0   
                         break                                
         else:                      
             lista3=  []  
-            for t in range(0,480,1):
+            for t in range(0,len(E_cut),1):
                 if E_cut[t][j]!=0.0:   
                     q= abs((E_cut[t][j]-2*E_sort[k][j-1]+E_sort[k][j-2])/dr)  
                     lista3.append(q)
                     r=min(lista3)
-                    for s in range(0,480,1):
+                    for s in range(0,len(E_cut),1):
                         if abs((E_cut[s][j]-2*E_sort[k][j-1]+E_sort[k][j-2])/dr) ==r:
                             E_sort[k].append(E_cut[s][j]) 
                             E_cut[s][j]=0   
